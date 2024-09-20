@@ -89,7 +89,7 @@ class MyVacuumAgent(Agent):
     def __init__(self, world_width, world_height, log):
         super().__init__(self.execute)
         self.initial_random_actions = 10
-        self.iteration_counter = 10
+        self.iteration_counter = 1000
         self.state = MyAgentState(world_width, world_height)
         self.log = log
 
@@ -171,14 +171,42 @@ class MyVacuumAgent(Agent):
         # Debug
         self.state.print_world_debug()
 
+        self.log("Position: ({}, {})\t\tDirection: {}".format(self.state.pos_x, self.state.pos_y,
+                                                              direction_to_string(self.state.direction)))
+
+        #if self.state.world[self.state.pos_x][self.state.pos_y - 1] == AGENT_STATE_HOME:
+        #    print("Home ahead")
+
+        #print("state:",  self.state.world[self.state.pos_x][self.state.pos_y])
+
+        #self.log(self.state.world[self.state.pos_x][self.state.pos_y])
+
         # Decide action
+        # if self.state.world[1][2] and self.state.last_action == ACTION_TURN_RIGHT:
+        #     self.state.last_action = ACTION_FORWARD
+        #     return ACTION_FORWARD
+        # if self.state.world[1][2]:
+        #     self.state.direction = (self.state.direction + 3) % 4
+        #     self.state.last_action = ACTION_TURN_RIGHT
+        #     return ACTION_TURN_RIGHT
+
+        def homeAheadAction():
+            if self.state.world[self.state.pos_x][self.state.pos_y - 1] == AGENT_STATE_HOME and not(self.state.direction == AGENT_DIRECTION_EAST):
+                return "right"
+            elif self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME and not(self.state.direction == AGENT_DIRECTION_SOUTH):
+                return "left"
+
+        if homeAheadAction() == "right":
+            self.state.direction = (self.state.direction + 1) % 4
+            self.state.last_action = ACTION_TURN_RIGHT
+            return ACTION_TURN_RIGHT
         if dirt:
-            self.log("DIRT -> choosing SUCK action!")
             self.state.last_action = ACTION_SUCK
             return ACTION_SUCK
-        elif bump:
-            self.state.last_action = ACTION_NOP
-            return ACTION_NOP
-        else:
+        if not bump:
             self.state.last_action = ACTION_FORWARD
             return ACTION_FORWARD
+        if bump:
+            self.state.direction = (self.state.direction + 1) % 4
+            self.state.last_action = ACTION_TURN_RIGHT
+            return ACTION_TURN_RIGHT
