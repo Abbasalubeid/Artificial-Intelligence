@@ -46,6 +46,8 @@ class MyAgentState:
         self.min_y = 1
         self.max_y = height - 2
 
+        self.start = True
+
     """
     Update perceived agent location
     """
@@ -126,18 +128,19 @@ class MyVacuumAgent(Agent):
         dirt = percept.attributes["dirt"]
         home = percept.attributes["home"]
 
-        # # Move agent to a randomly chosen initial position
-        # if self.initial_random_actions > 0:
-        #     self.log("Moving to random start position ({} steps left)".format(self.initial_random_actions))
-        #     return self.move_to_random_start_position(bump)
-        #
-        # # Finalize randomization by properly updating position (without subsequently changing it)
-        # elif self.initial_random_actions == 0:
-        #     self.initial_random_actions -= 1
-        #     self.state.update_position(bump)
-        #     self.state.last_action = ACTION_SUCK
-        #     self.log("Processing percepts after position randomization")
-        #     return ACTION_SUCK
+        # Move agent to a randomly chosen initial position
+        if self.initial_random_actions > 0:
+            self.log("Moving to random start position ({} steps left)".format(self.initial_random_actions))
+            return self.move_to_random_start_position(bump)
+
+        # Finalize randomization by properly updating position (without subsequently changing it)
+        elif self.initial_random_actions == 0:
+            self.initial_random_actions -= 1
+            self.state.update_position(bump)
+            self.state.last_action = ACTION_SUCK
+            self.log("Processing percepts after position randomization")
+            return ACTION_SUCK
+
 
 
         ########################
@@ -219,29 +222,50 @@ class MyVacuumAgent(Agent):
         # print("W: ", self.state.world_width)
         # print("H: ", self.state.world_height)
 
-        def boundaryReached():
-            pos_x, pos_y = self.state.pos_x, self.state.pos_y
-            min_x, max_x = self.state.min_x, self.state.max_x
-            min_y, max_y = self.state.min_y, self.state.max_y
-            direction = self.state.direction
+        def goToStartPos():
 
-            if direction == AGENT_DIRECTION_EAST and pos_x >= max_x:
-                self.state.max_x -= 1  # shrink max_x boundary after reaching it
+            while self.state.direction  != AGENT_DIRECTION_NORTH and self.state.pos_y > 1:
+                 return turnRight()
+            if bump:
+                return turnLeft()
+            elif (self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME) and not(self.state.direction == AGENT_DIRECTION_EAST):
+                return turnRight()
+            elif (self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME) and (self.state.direction == AGENT_DIRECTION_EAST):
+                self.state.start = False
+                return ACTION_NOP
+            else:
+                return moveForward()
+
+
+            # Face north
+            # while self.state.direction  != AGENT_DIRECTION_NORTH and self.state.pos_y > 1:
+            #     # print("curr : ", self.state.pos_y)
+            #     # print("max : ", self.state.max_y)
+            #     return turnRight()
+
+
+        def boundaryReached():
+            # print("curr : ", self.state.pos_x, self.state.pos_y)
+            # print("max : ", self.state.max_x, self.state.max_y)
+            if self.state.direction == AGENT_DIRECTION_EAST and self.state.pos_x >= self.state.max_x:
+                self.state.max_x -= 1
                 return True
-            elif direction == AGENT_DIRECTION_WEST and pos_x <= min_x:
-                self.state.min_x += 1  # shrink min_x boundary after reaching it
+            elif self.state.direction == AGENT_DIRECTION_WEST and self.state.pos_x <= self.state.min_x:
+                self.state.min_x += 1
                 return True
-            elif direction == AGENT_DIRECTION_SOUTH and pos_y >= max_y:
-                self.state.max_y -= 1  # shrink max_y boundary after reaching it
+            elif self.state.direction == AGENT_DIRECTION_SOUTH and self.state.pos_y >= self.state.max_y:
+                self.state.max_y -= 1
                 return True
-            elif direction == AGENT_DIRECTION_NORTH and pos_y <= min_y:
-                self.state.min_y += 1  # shrink min_y boundary after reaching it
+            elif self.state.direction == AGENT_DIRECTION_NORTH and self.state.pos_y <= self.state.min_y:
+                self.state.min_y += 1
                 return True
             return False
 
         if dirt:
             self.state.last_action = ACTION_SUCK
             return ACTION_SUCK
+        if self.state.start:
+            return goToStartPos()
         if boundaryReached():
             return turnRight()
 
