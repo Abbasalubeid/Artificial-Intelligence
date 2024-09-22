@@ -41,6 +41,11 @@ class MyAgentState:
         self.world_width = width
         self.world_height = height
 
+        self.min_x = 1
+        self.max_x = width - 2
+        self.min_y = 1
+        self.max_y = height - 2
+
     """
     Update perceived agent location
     """
@@ -121,18 +126,18 @@ class MyVacuumAgent(Agent):
         dirt = percept.attributes["dirt"]
         home = percept.attributes["home"]
 
-        # Move agent to a randomly chosen initial position
-        if self.initial_random_actions > 0:
-            self.log("Moving to random start position ({} steps left)".format(self.initial_random_actions))
-            return self.move_to_random_start_position(bump)
-
-        # Finalize randomization by properly updating position (without subsequently changing it)
-        elif self.initial_random_actions == 0:
-            self.initial_random_actions -= 1
-            self.state.update_position(bump)
-            self.state.last_action = ACTION_SUCK
-            self.log("Processing percepts after position randomization")
-            return ACTION_SUCK
+        # # Move agent to a randomly chosen initial position
+        # if self.initial_random_actions > 0:
+        #     self.log("Moving to random start position ({} steps left)".format(self.initial_random_actions))
+        #     return self.move_to_random_start_position(bump)
+        #
+        # # Finalize randomization by properly updating position (without subsequently changing it)
+        # elif self.initial_random_actions == 0:
+        #     self.initial_random_actions -= 1
+        #     self.state.update_position(bump)
+        #     self.state.last_action = ACTION_SUCK
+        #     self.log("Processing percepts after position randomization")
+        #     return ACTION_SUCK
 
 
         ########################
@@ -165,14 +170,13 @@ class MyVacuumAgent(Agent):
         # Update perceived state of current tile
         if dirt:
             self.state.update_world(self.state.pos_x, self.state.pos_y, AGENT_STATE_DIRT)
-        else:
+        elif not home:
             self.state.update_world(self.state.pos_x, self.state.pos_y, AGENT_STATE_CLEAR)
 
         # Debug
         self.state.print_world_debug()
 
-        self.log("Position: ({}, {})\t\tDirection: {}".format(self.state.pos_x, self.state.pos_y,
-                                                              direction_to_string(self.state.direction)))
+        self.log("Position: ({}, {})\t\tDirection: {}".format(self.state.pos_x, self.state.pos_y,direction_to_string(self.state.direction)))
 
         #if self.state.world[self.state.pos_x][self.state.pos_y - 1] == AGENT_STATE_HOME:
         #    print("Home ahead")
@@ -190,23 +194,60 @@ class MyVacuumAgent(Agent):
         #     self.state.last_action = ACTION_TURN_RIGHT
         #     return ACTION_TURN_RIGHT
 
-        def homeAheadAction():
-            if self.state.world[self.state.pos_x][self.state.pos_y - 1] == AGENT_STATE_HOME and not(self.state.direction == AGENT_DIRECTION_EAST):
-                return "right"
-            elif self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME and not(self.state.direction == AGENT_DIRECTION_SOUTH):
-                return "left"
 
-        if homeAheadAction() == "right":
+        # def homeAhead():
+        #     if ((self.state.world[self.state.pos_x][self.state.pos_y - 1] == AGENT_STATE_HOME or self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME)
+        #             and not(self.state.direction == AGENT_DIRECTION_EAST)):
+        #         return True
+
+        def turnLeft():
+            self.state.direction = (self.state.direction + 3) % 4
+            self.state.last_action = ACTION_TURN_LEFT
+            return ACTION_TURN_LEFT
+
+        def turnRight():
             self.state.direction = (self.state.direction + 1) % 4
             self.state.last_action = ACTION_TURN_RIGHT
             return ACTION_TURN_RIGHT
+
+        def moveForward():
+            self.state.last_action = ACTION_FORWARD
+            return ACTION_FORWARD
+
+        # print("maxMin: ", self.state.max_x, self.state.min_x, self.state.max_y, self.state.min_y)
+        #
+        # print("W: ", self.state.world_width)
+        # print("H: ", self.state.world_height)
+
+        def boundaryReached():
+            pos_x, pos_y = self.state.pos_x, self.state.pos_y
+            min_x, max_x = self.state.min_x, self.state.max_x
+            min_y, max_y = self.state.min_y, self.state.max_y
+            direction = self.state.direction
+
+            if direction == AGENT_DIRECTION_EAST and pos_x >= max_x:
+                self.state.max_x -= 1  # shrink max_x boundary after reaching it
+                return True
+            elif direction == AGENT_DIRECTION_WEST and pos_x <= min_x:
+                self.state.min_x += 1  # shrink min_x boundary after reaching it
+                return True
+            elif direction == AGENT_DIRECTION_SOUTH and pos_y >= max_y:
+                self.state.max_y -= 1  # shrink max_y boundary after reaching it
+                return True
+            elif direction == AGENT_DIRECTION_NORTH and pos_y <= min_y:
+                self.state.min_y += 1  # shrink min_y boundary after reaching it
+                return True
+            return False
+
         if dirt:
             self.state.last_action = ACTION_SUCK
             return ACTION_SUCK
-        if not bump:
-            self.state.last_action = ACTION_FORWARD
-            return ACTION_FORWARD
-        if bump:
-            self.state.direction = (self.state.direction + 1) % 4
-            self.state.last_action = ACTION_TURN_RIGHT
-            return ACTION_TURN_RIGHT
+        if boundaryReached():
+            return turnRight()
+
+        return moveForward()
+
+        # if bump:
+        #     return turnRight()
+        # if not bump:
+        #    return moveForward()
