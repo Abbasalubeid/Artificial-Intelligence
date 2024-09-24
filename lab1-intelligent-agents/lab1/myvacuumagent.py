@@ -47,6 +47,7 @@ class MyAgentState:
         self.max_y = height - 2
 
         self.start = True
+        self.goHome = False
 
     """
     Update perceived agent location
@@ -171,7 +172,7 @@ class MyVacuumAgent(Agent):
             self.state.update_world(self.state.pos_x + offset[0], self.state.pos_y + offset[1], AGENT_STATE_WALL)
 
         # Update perceived state of current tile
-        if dirt:
+        if dirt and not home:
             self.state.update_world(self.state.pos_x, self.state.pos_y, AGENT_STATE_DIRT)
         elif not home:
             self.state.update_world(self.state.pos_x, self.state.pos_y, AGENT_STATE_CLEAR)
@@ -179,99 +180,83 @@ class MyVacuumAgent(Agent):
         # Debug
         self.state.print_world_debug()
 
-        self.log("Position: ({}, {})\t\tDirection: {}".format(self.state.pos_x, self.state.pos_y,direction_to_string(self.state.direction)))
-
-        #if self.state.world[self.state.pos_x][self.state.pos_y - 1] == AGENT_STATE_HOME:
-        #    print("Home ahead")
-
-        #print("state:",  self.state.world[self.state.pos_x][self.state.pos_y])
-
-        #self.log(self.state.world[self.state.pos_x][self.state.pos_y])
-
-        # Decide action
-        # if self.state.world[1][2] and self.state.last_action == ACTION_TURN_RIGHT:
-        #     self.state.last_action = ACTION_FORWARD
-        #     return ACTION_FORWARD
-        # if self.state.world[1][2]:
-        #     self.state.direction = (self.state.direction + 3) % 4
-        #     self.state.last_action = ACTION_TURN_RIGHT
-        #     return ACTION_TURN_RIGHT
-
-
-        # def homeAhead():
-        #     if ((self.state.world[self.state.pos_x][self.state.pos_y - 1] == AGENT_STATE_HOME or self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME)
-        #             and not(self.state.direction == AGENT_DIRECTION_EAST)):
-        #         return True
-
         def turnLeft():
+            self.log("turning left")
             self.state.direction = (self.state.direction + 3) % 4
             self.state.last_action = ACTION_TURN_LEFT
             return ACTION_TURN_LEFT
 
         def turnRight():
+            self.log("turning right")
             self.state.direction = (self.state.direction + 1) % 4
             self.state.last_action = ACTION_TURN_RIGHT
             return ACTION_TURN_RIGHT
 
         def moveForward():
+            self.log("moving forward")
             self.state.last_action = ACTION_FORWARD
             return ACTION_FORWARD
 
-        # print("maxMin: ", self.state.max_x, self.state.min_x, self.state.max_y, self.state.min_y)
-        #
-        # print("W: ", self.state.world_width)
-        # print("H: ", self.state.world_height)
-
         def goToStartPos():
 
-            while self.state.direction  != AGENT_DIRECTION_NORTH and self.state.pos_y > 1:
-                 return turnRight()
-            if bump:
+            if self.state.direction != AGENT_DIRECTION_NORTH and self.state.pos_y > 1:
+                return turnRight()
+            elif home and self.state.direction != AGENT_DIRECTION_EAST:
+                return turnRight()
+            elif bump:
                 return turnLeft()
             elif (self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME) and not(self.state.direction == AGENT_DIRECTION_EAST):
                 return turnRight()
             elif (self.state.world[self.state.pos_x - 1][self.state.pos_y] == AGENT_STATE_HOME) and (self.state.direction == AGENT_DIRECTION_EAST):
                 self.state.start = False
-                return ACTION_NOP
+                # Do nothing
+                self.state.last_action = ACTION_SUCK
+                return ACTION_SUCK
             else:
                 return moveForward()
 
-
-            # Face north
-            # while self.state.direction  != AGENT_DIRECTION_NORTH and self.state.pos_y > 1:
-            #     # print("curr : ", self.state.pos_y)
-            #     # print("max : ", self.state.max_y)
-            #     return turnRight()
-
-
         def boundaryReached():
-            # print("curr : ", self.state.pos_x, self.state.pos_y)
-            # print("max : ", self.state.max_x, self.state.max_y)
-            if self.state.direction == AGENT_DIRECTION_EAST and self.state.pos_x >= self.state.max_x:
+
+            if self.state.min_x > self.state.max_x and self.state.min_y > self.state.max_y:
+                self.log("Going Home")
+                self.state.goHome = True
+                return False
+
+            if self.state.direction == AGENT_DIRECTION_EAST and self.state.pos_x == self.state.max_x:
                 self.state.max_x -= 1
                 return True
-            elif self.state.direction == AGENT_DIRECTION_WEST and self.state.pos_x <= self.state.min_x:
+            elif self.state.direction == AGENT_DIRECTION_WEST and self.state.pos_x == self.state.min_x:
                 self.state.min_x += 1
                 return True
-            elif self.state.direction == AGENT_DIRECTION_SOUTH and self.state.pos_y >= self.state.max_y:
+            elif self.state.direction == AGENT_DIRECTION_SOUTH and self.state.pos_y == self.state.max_y:
                 self.state.max_y -= 1
                 return True
-            elif self.state.direction == AGENT_DIRECTION_NORTH and self.state.pos_y <= self.state.min_y:
+            elif self.state.direction == AGENT_DIRECTION_NORTH and self.state.pos_y == self.state.min_y:
                 self.state.min_y += 1
                 return True
             return False
 
+        def goHome():
+
+            if self.state.direction  != AGENT_DIRECTION_NORTH and self.state.pos_y > 1:
+                return turnRight()
+            if home:
+                self.log("Home and done!")
+                self.iteration_counter = 0
+                return ACTION_NOP
+            elif bump:
+                return turnLeft()
+            else:
+                return moveForward()
+
         if dirt:
             self.state.last_action = ACTION_SUCK
             return ACTION_SUCK
-        if self.state.start:
+        elif self.state.start:
             return goToStartPos()
-        if boundaryReached():
+        elif boundaryReached():
             return turnRight()
-
-        return moveForward()
-
-        # if bump:
-        #     return turnRight()
-        # if not bump:
-        #    return moveForward()
+        elif self.state.goHome:
+            return goHome()
+        else:
+            return moveForward()
