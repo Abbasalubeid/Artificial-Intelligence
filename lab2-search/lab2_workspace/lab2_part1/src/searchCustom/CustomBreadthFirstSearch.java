@@ -1,11 +1,9 @@
 package searchCustom;
 
-import java.util.Random;
 
 public class CustomBreadthFirstSearch  extends CustomGraphSearch{
 
-	public   CustomBreadthFirstSearch(int maxDepth){
-		super(new Random().nextBoolean()); // Temporary random choice, you need to pick true or false!
-		System.out.println("Change line above in \"CustomBreadthFirstSearch.java\"!");
+	public CustomBreadthFirstSearch(int maxDepth) {
+	    super(false); // Use false to add to the back, mimicking queue behavior
 	}
 };
