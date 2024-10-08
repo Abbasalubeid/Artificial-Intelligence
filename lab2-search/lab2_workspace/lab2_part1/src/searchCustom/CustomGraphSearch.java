@@ -69,7 +69,7 @@ public class CustomGraphSearch implements SearchObject {
 						frontier.addNodeToBack(childNode);  // Queue behavior for BFS (FIFO)
 				}
 			}
-		}
+		}	
 		
         // Return an empty path if no path to the goal is found
         return path;
