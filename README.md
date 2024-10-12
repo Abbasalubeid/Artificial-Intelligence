@@ -25,7 +25,7 @@ The aim of the course is to introduce concepts and applications of artificial in
 
 ## Lab 2 - Search
 
-## [Lab 3 - Deep Learning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab3-deep-learning)
+## [Lab 3 - Supervised Deep Learning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab3-deep-learning)
 
 This lab was mostly a tutorial on [TensorFlow](https://www.tensorflow.org) and how the theoretical part studied about suprevised deep learning like gradient descent and mini-batch sizes can be used in a project. The lab focused on building an image recognition model on the "Fashion MNIST" data set which is a set of product images from the clothing retailer Zalando.
 
