@@ -4,10 +4,13 @@ This repository contains solutions to labs from the course TDDC17 - Artificial I
 
 ## Intended Learning Outcomes
 
-The aim of the course is to introduce concepts and applications of artificial intelligence (AI). The focus is on developing intelligent agent systems that can decide what to do and execute those actions. This requires techniques for problem-solving, knowledge and reasoning, learning, communication, perception, and action. After the course, students will be able to:
-
-- Explain and discuss artificial intelligence concepts.
-- Apply well-known artificial intelligence techniques.
+The aim of the course is to introduce concepts and applications of artificial intelligence (AI). The focus is on developing intelligent agent systems that can decide what to do and execute those actions. After the course, students will be able to explain, discuss, and apply artificial intelligence concepts such as:
+- State space search algorithms
+- Constraint satisfaction problems
+- Machine learning
+- Knowledge representation with propositional logic
+- Probabilistic reasoning
+- Automated planning
 
 ## Course Content
 
