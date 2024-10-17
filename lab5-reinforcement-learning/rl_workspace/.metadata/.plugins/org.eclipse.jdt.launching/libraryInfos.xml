@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+    <libraryInfo home="/usr/jdk/instances/jdk1.6.0" version="1.6.0_33">
+        <bootpath>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/resources.jar"/>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/rt.jar"/>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/sunrsasign.jar"/>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/jsse.jar"/>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/jce.jar"/>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/charsets.jar"/>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/modules/jdk.boot.jar"/>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/classes"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/ext"/>
+            <entry path="/usr/jdk/packages/lib/ext"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="/usr/jdk/instances/jdk1.6.0/jre/lib/endorsed"/>
+        </endorsedDirs>
+    </libraryInfo>
+    <libraryInfo home="/Users/abbas/.eclipse/1738435388_macosx_cocoa_x86_64/configuration/org.eclipse.osgi/104/data/353248576/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.x86_64_23.0.0.v20240919-1706" version="23">
+        <bootpath>
+            <entry path="null"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="null"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="null"/>
+        </endorsedDirs>
+    </libraryInfo>
+    <libraryInfo home="/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home" version="19.0.2"/>
+    <libraryInfo home="/Users/abbas/.eclipse/1738435388_macosx_cocoa_x86_64/configuration/org.eclipse.osgi/104/data/353248576/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.macosx.x86_64_23.0.0.v20240919-1706/jre" version="23"/>
+</libraryInfos>
