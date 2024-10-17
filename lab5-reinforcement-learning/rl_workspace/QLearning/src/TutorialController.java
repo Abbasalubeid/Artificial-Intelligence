@@ -37,10 +37,14 @@ public class TutorialController extends Controller {
 		middleRocket = (RocketEngine) cso.getObjectById("rocket_engine_middle");
 	}
 
-    public void tick(int currentTime) {
+	public void tick(int currentTime) {
 
-    	/* TODO: Insert your code here */
-    	
-    }
+	    // Print sensor values to the standard output for debugging
+	    System.out.println("Current Time: " + currentTime);
+	    System.out.println("Position X: " + this.x.getValue() + ", Position Y: " + this.y.getValue());
+	    System.out.println("Velocity X: " + this.vx.getValue() + ", Velocity Y: " + this.vy.getValue());
+	    System.out.println("Angle: " + this.angle.getValue());
+	}
+
 
 }
