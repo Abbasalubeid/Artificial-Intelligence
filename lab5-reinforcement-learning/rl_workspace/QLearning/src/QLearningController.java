@@ -24,7 +24,7 @@ public class QLearningController extends Controller {
 	RocketEngine middleEngine;
 	RocketEngine rightEngine;
 
-	final static int NUM_ACTIONS = 7; /* The takeAction function must be changed if this is modified */
+	final static int NUM_ACTIONS = 8; /* The takeAction function must be changed if this is modified */
 	
 	/* Keep track of the previous state and action */
 	String previous_state = null;
@@ -84,13 +84,41 @@ public class QLearningController extends Controller {
 
 	/* Performs the chosen action */
 	void performAction(int action) {
+	    resetRockets();
 
-		/* Fire zeh rockets! */
-		/* TODO: Remember to change NUM_ACTIONS constant to reflect the number of actions (including 0, no action) */
-		
-		/* TODO: IMPLEMENT THIS FUNCTION */
-		
+	    switch(action) {
+	        case 0:
+	            // No action
+	            break;
+	        case 1:
+	            leftEngine.setBursting(true);
+	            break;
+	        case 2:
+	            rightEngine.setBursting(true);
+	            break;
+	        case 3:
+	            middleEngine.setBursting(true);
+	            break;
+	        case 4:
+	            leftEngine.setBursting(true);
+	            rightEngine.setBursting(true);
+	            break;
+	        case 5:
+	            leftEngine.setBursting(true);
+	            middleEngine.setBursting(true);
+	            break;    
+	        case 6:
+	            rightEngine.setBursting(true);
+	            middleEngine.setBursting(true);
+	            break;
+	        case 7:
+	            leftEngine.setBursting(true);
+	            middleEngine.setBursting(true);
+	            rightEngine.setBursting(true);
+	            break;
+	    }
 	}
+
 
 	/* Main decision loop. Called every iteration by the simulator */
 	public void tick(int currentTime) {
@@ -121,13 +149,15 @@ public class QLearningController extends Controller {
 				/* Update Q value */
 				if (Qtable.get(prev_stateaction) == null) {
 					Qtable.put(prev_stateaction, 0.0);
-				} 
+				}
 
-				
-				/* TODO: IMPLEMENT Q-UPDATE HERE! */
-				
-				/* See top for constants and below for helper functions */
-				
+				// Q-UPDATE using Bellman equation
+				double oldQ = Qtable.get(prev_stateaction);
+				double alpha = alpha(Ntable.get(prev_stateaction));
+				double maxQ = getMaxActionQValue(new_state);
+				double newQ = oldQ + alpha * (previous_reward + GAMMA_DISCOUNT_FACTOR * maxQ - oldQ);
+				Qtable.put(prev_stateaction, newQ);
+
 				
 				int action = selectAction(new_state); /* Make sure you understand how it selects an action */
 

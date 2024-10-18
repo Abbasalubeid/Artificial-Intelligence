@@ -3,23 +3,18 @@ public class StateAndReward {
 	
 	/* State discretization function for the angle controller */
 	public static String getStateAngle(double angle, double vx, double vy) {
-
-		/* TODO: IMPLEMENT THIS FUNCTION */
-
-		String state = "OneStateToRuleThemAll";
-		
-		return state;
+		// Angle varies between -3 and 3
+	    int discretizedAngle = discretize(angle, 50, -3.0, 3.0);
+	    return "Angle:" + discretizedAngle;
 	}
+
 
 	/* Reward function for the angle controller */
 	public static double getRewardAngle(double angle, double vx, double vy) {
-
-		/* TODO: IMPLEMENT THIS FUNCTION */
-		
-		double reward = 0;
-
-		return reward;
+	    // Penalize the square of the angle to increase sensitivity to larger deviations
+	    return -Math.pow(angle, 2);
 	}
+
 
 	/* State discretization function for the full hover controller */
 	public static String getStateHover(double angle, double vx, double vy) {
