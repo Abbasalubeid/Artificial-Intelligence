@@ -3,8 +3,8 @@ public class StateAndReward {
 	
 	/* State discretization function for the angle controller */
 	public static String getStateAngle(double angle, double vx, double vy) {
-		// Angle varies between -3 and 3
-	    int discretizedAngle = discretize(angle, 50, -3.0, 3.0);
+		// Angle varies between -pi to pi
+	    int discretizedAngle = discretize(angle, 50, -Math.PI, Math.PI);
 	    return "Angle:" + discretizedAngle;
 	}
 
