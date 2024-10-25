@@ -24,7 +24,7 @@ public class QLearningController extends Controller {
 	RocketEngine middleEngine;
 	RocketEngine rightEngine;
 
-	final static int NUM_ACTIONS = 8; /* The takeAction function must be changed if this is modified */
+	final static int NUM_ACTIONS = 5; /* The takeAction function must be changed if this is modified */
 	
 	/* Keep track of the previous state and action */
 	String previous_state = null;
@@ -82,42 +82,70 @@ public class QLearningController extends Controller {
 		middleEngine.setBursting(false);
 	}
 
+	// Hover works really good after about 15-20 minutes of training
+	/* Performs the chosen action */
+//	void performAction(int action) {
+//	    resetRockets();
+//
+//	    switch(action) {
+//	        case 0:
+//	            // No action
+//	            break;
+//	        case 1:
+//	            leftEngine.setBursting(true);
+//	            break;
+//	        case 2:
+//	            rightEngine.setBursting(true);
+//	            break;
+//	        case 3:
+//	            middleEngine.setBursting(true);
+//	            break;
+//	        case 4:
+//	            leftEngine.setBursting(true);
+//	            rightEngine.setBursting(true);
+//	            break;
+//	        case 5:
+//	            leftEngine.setBursting(true);
+//	            middleEngine.setBursting(true);
+//	            break;    
+//	        case 6:
+//	            rightEngine.setBursting(true);
+//	            middleEngine.setBursting(true);
+//	            break;
+//	        case 7:
+//	            leftEngine.setBursting(true);
+//	            middleEngine.setBursting(true);
+//	            rightEngine.setBursting(true);
+//	            break;
+//	    }
+//	}
+	
+	// Hover is okay after about 5 minutes of training, and good after about 10 minutes
 	/* Performs the chosen action */
 	void performAction(int action) {
-	    resetRockets();
-
-	    switch(action) {
-	        case 0:
-	            // No action
-	            break;
-	        case 1:
-	            leftEngine.setBursting(true);
-	            break;
-	        case 2:
-	            rightEngine.setBursting(true);
-	            break;
-	        case 3:
-	            middleEngine.setBursting(true);
-	            break;
-	        case 4:
-	            leftEngine.setBursting(true);
-	            rightEngine.setBursting(true);
-	            break;
-	        case 5:
-	            leftEngine.setBursting(true);
-	            middleEngine.setBursting(true);
-	            break;    
-	        case 6:
-	            rightEngine.setBursting(true);
-	            middleEngine.setBursting(true);
-	            break;
-	        case 7:
-	            leftEngine.setBursting(true);
-	            middleEngine.setBursting(true);
-	            rightEngine.setBursting(true);
-	            break;
-	    }
+		resetRockets();
+		switch (action){
+		case 0:
+			break;
+		case 1:
+			leftEngine.setBursting(true);
+			break;
+		case 2:
+			rightEngine.setBursting(true);
+			break;
+		case 3:
+			middleEngine.setBursting(true);
+			break;
+		case 4:
+			rightEngine.setBursting(true);
+			middleEngine.setBursting(true);
+			leftEngine.setBursting(true);
+			break;
+		default: 
+			break;
+		}
 	}
+
 
 
 	/* Main decision loop. Called every iteration by the simulator */
@@ -125,14 +153,14 @@ public class QLearningController extends Controller {
 		iteration++;
 		
 		if (!paused) {
-			String new_state = StateAndReward.getStateAngle(angle.getValue(), vx.getValue(), vy.getValue());
+			String new_state = StateAndReward.getStateHover(angle.getValue(), vx.getValue(), vy.getValue());
 
 			/* Repeat the chosen action for a while, hoping to reach a new state. This is a trick to speed up learning on this problem. */
 			action_counter++;
 			if (new_state.equals(previous_state) && action_counter < REPEAT_ACTION_MAX) {
 				return;
 			}
-			double previous_reward = StateAndReward.getRewardAngle(previous_angle, previous_vx, previous_vy);
+			double previous_reward = StateAndReward.getRewardHover(previous_angle, previous_vx, previous_vy);
 			action_counter = 0;
 
 			/* The agent is in a new state, do learning and action selection */
