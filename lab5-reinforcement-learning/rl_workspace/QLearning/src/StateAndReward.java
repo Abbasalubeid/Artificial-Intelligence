@@ -16,25 +16,21 @@ public class StateAndReward {
 	}
 
 
-	/* State discretization function for the full hover controller */
-	public static String getStateHover(double angle, double vx, double vy) {
+    /* State discretization function for the full hover controller */
+    public static String getStateHover(double angle, double vx, double vy) {
+        int discretizedAngle = discretize(angle, 20, -Math.PI, Math.PI);
+        int discretizedVy = discretize(vy, 8, -4, 4);
+        int discretizedVx = discretize(vx, 5, -1.5, 1.5); 
+        return "Angle:" + discretizedAngle + "_Vy:" + discretizedVy + "_Vx:" + discretizedVx;
+    }
 
-		/* TODO: IMPLEMENT THIS FUNCTION */
-
-		String state = "OneStateToRuleThemAll2";
-		
-		return state;
-	}
-
-	/* Reward function for the full hover controller */
-	public static double getRewardHover(double angle, double vx, double vy) {
-
-		/* TODO: IMPLEMENT THIS FUNCTION */
-		
-		double reward = 0;
-
-		return reward;
-	}
+    /* Reward function for the full hover controller */
+    public static double getRewardHover(double angle, double vx, double vy) {
+        double angleReward = -Math.pow(angle, 3);  
+        double vyReward = - (1000 * Math.pow(vy, 2));
+        double vxReward = - (700 * Math.pow(vx, 2)); 
+        return angleReward + vyReward + vxReward; 
+    }
 
 	// ///////////////////////////////////////////////////////////
 	// discretize() performs a uniform discretization of the
