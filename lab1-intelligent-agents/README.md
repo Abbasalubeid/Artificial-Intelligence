@@ -14,7 +14,106 @@ Task 1 was to make the agent start from a random location, suck up all dirt in a
 
 ![](L1-task1.gif)
 
+## Task 2
 
+In the second task, the approach was adapted to handle maps with obstacles. Since the agent cannot rely on moving in a rectangular pattern due to the presence of obstacles, a different strategy was required to explore the map, clean all dirt, and return to the home position.
+
+The main idea was to use a Breadth-First Search (BFS) algorithm to systematically explore the map. The agent maintains a queue ```state.queue```, which stores unexplored neighboring cells along with their parent cells. At each step, the agent adds unknown neighboring cells to the queue.
+
+The solution for task 2 also works for task 1, the agent visits all accessible cells and shuts down at the home position, whether there are obstacles or not.
+
+The main decision loop is encapsulated in the ```next_move``` function. 
+
+```python
+def next_move():
+
+   if home and self.state.go_home:
+         self.log("Home and done!")
+         self.iteration_counter = 0
+         return ACTION_NOP
+
+   update_queue()
+
+   if not self.state.queue:
+         self.log("The whole map is updated, lets go home")
+         print("Add home to queue!")
+         self.state.queue.append(((1,1), (1, 1)))
+         self.state.go_home = True
+
+   print("Queue :", self.state.queue)
+
+   # If stack is not empty, we are on a path to a certain target
+   if self.state.backtrack_stack:
+         print("Stack not empty: ", self.state.backtrack_stack)
+         target_x, target_y = self.state.backtrack_stack[-1]
+   else:
+         ((target_x, target_y), parent) = self.state.queue[0]
+
+         if not directly_reachable(target_x, target_y) and not self.state.backtrack_stack:
+            print("Target pos not reachable: ", target_x, target_y, " looking for path...")
+            path = calculate_path(parent)
+            if path:
+               print("A path to the target: ", path)
+               self.state.backtrack_stack.extend(path)
+               target_x, target_y = self.state.backtrack_stack[-1]
+               print("new stack with path to: ",parent, self.state.backtrack_stack)
+
+            elif not path and (target_x, target_y) == (1, 1):
+               print("No path to home...")
+               self.iteration_counter = 0
+               return ACTION_NOP
+
+
+   print("Current Position: ({}, {}) Direction: {} Target: ({}, {})".format(
+         self.state.pos_x, self.state.pos_y, self.state.direction, target_x, target_y))
+
+
+   if target_x == self.state.pos_x and target_y == self.state.pos_y:
+         # if the target was from the stack, pop the stack to move to next target in the next call
+         if self.state.backtrack_stack:
+            self.state.backtrack_stack.pop()
+            print("Backtrack stack after pop: ", self.state.backtrack_stack)
+         elif self.state.queue:
+            self.state.queue.popleft()
+            print("Queue after left pop: ", self.state.queue)
+         self.state.last_action = ACTION_SUCK
+         return ACTION_SUCK  # Do nothing
+   elif target_x < self.state.pos_x and self.state.direction != AGENT_DIRECTION_WEST:
+         return turn_right()
+   elif target_x > self.state.pos_x and self.state.direction != AGENT_DIRECTION_EAST:
+         return turn_right()
+   elif target_y < self.state.pos_y and self.state.direction != AGENT_DIRECTION_NORTH:
+         return turn_right()
+   elif target_y > self.state.pos_y and self.state.direction != AGENT_DIRECTION_SOUTH:
+         return turn_right()
+   else:
+         # if the target was from the stack, pop the stack to move to next target in the next call
+         if self.state.backtrack_stack:
+            self.state.backtrack_stack.pop()
+            print("Backtrack stack after pop: ", self.state.backtrack_stack)
+         else:
+            self.state.queue.popleft()
+            print("Queue after left pop: ", self.state.queue)
+
+         print("Moving forward towards: ", target_x, target_y)
+         return move_forward()
+```
+
+
+- The agent first checks if it should return home by evaluating the boolean ```state.go_home```, if true and the agent is at the home position, it stops execution.
+
+- If the agent is not returning home, it calls the ```update_queue``` function to add new neighbors to the queue by checking the four neighboring cells (up, down, left, right) of the current position. 
+   - If a neighbor is unknown or home and not already in the queue, it is added to the queue along with the current position as its parent. 
+      - The parent is added so that we can calculate a path to that parent when we want to visit a certain cell.
+
+- When the agent needs to move to a target position, it first checks if the target is directly reachable using the ```directly_reachable``` function. 
+   -  If the target is not directly reachable, ```calculate_path``` is used to compute a path to the parent of the target using BFS.
+   - ```calculate_path``` performs BFS starting from the current position. It uses a queue, a ```visited``` set to keep track of explored positions, and a ```came_from``` dictionary to reconstruct the path. 
+      - When the target is found, the path is reconstructed by backtracking from the target to the start position using the ```came_from``` dictionary. 
+      - The path is then stored in the ```state.backtrack_stack``` which the agent follows to reach the target.
+- If the queue is empty, it means the agent has explored all accessible areas. In this case, the ```state.go_home``` is set to true and the home position is added to the queue.
+
+![](L1-task2.gif)
 
 # Notes
 
