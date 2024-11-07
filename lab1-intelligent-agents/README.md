@@ -1,3 +1,5 @@
+# Intelligent Agents
+
 The purpose with this lab is to introduce the agent paradigm. The goal is to program an agent to autonomously clean a randomly generated world of various sizes, potentially with obstacles. The agent's goal is to clean all dirty squares and return to its starting position.
 
 ## Task 1
@@ -23,81 +25,6 @@ The main idea was to use a Breadth-First Search (BFS) algorithm to systematicall
 The solution for task 2 also works for task 1, the agent visits all accessible cells and shuts down at the home position, whether there are obstacles or not.
 
 The main decision loop is encapsulated in the ```next_move``` function. 
-
-```python
-def next_move():
-
-   if home and self.state.go_home:
-         self.log("Home and done!")
-         self.iteration_counter = 0
-         return ACTION_NOP
-
-   update_queue()
-
-   if not self.state.queue:
-         self.log("The whole map is updated, lets go home")
-         print("Add home to queue!")
-         self.state.queue.append(((1,1), (1, 1)))
-         self.state.go_home = True
-
-   print("Queue :", self.state.queue)
-
-   # If stack is not empty, we are on a path to a certain target
-   if self.state.backtrack_stack:
-         print("Stack not empty: ", self.state.backtrack_stack)
-         target_x, target_y = self.state.backtrack_stack[-1]
-   else:
-         ((target_x, target_y), parent) = self.state.queue[0]
-
-         if not directly_reachable(target_x, target_y) and not self.state.backtrack_stack:
-            print("Target pos not reachable: ", target_x, target_y, " looking for path...")
-            path = calculate_path(parent)
-            if path:
-               print("A path to the target: ", path)
-               self.state.backtrack_stack.extend(path)
-               target_x, target_y = self.state.backtrack_stack[-1]
-               print("new stack with path to: ",parent, self.state.backtrack_stack)
-
-            elif not path and (target_x, target_y) == (1, 1):
-               print("No path to home...")
-               self.iteration_counter = 0
-               return ACTION_NOP
-
-
-   print("Current Position: ({}, {}) Direction: {} Target: ({}, {})".format(
-         self.state.pos_x, self.state.pos_y, self.state.direction, target_x, target_y))
-
-
-   if target_x == self.state.pos_x and target_y == self.state.pos_y:
-         # if the target was from the stack, pop the stack to move to next target in the next call
-         if self.state.backtrack_stack:
-            self.state.backtrack_stack.pop()
-            print("Backtrack stack after pop: ", self.state.backtrack_stack)
-         elif self.state.queue:
-            self.state.queue.popleft()
-            print("Queue after left pop: ", self.state.queue)
-         self.state.last_action = ACTION_SUCK
-         return ACTION_SUCK  # Do nothing
-   elif target_x < self.state.pos_x and self.state.direction != AGENT_DIRECTION_WEST:
-         return turn_right()
-   elif target_x > self.state.pos_x and self.state.direction != AGENT_DIRECTION_EAST:
-         return turn_right()
-   elif target_y < self.state.pos_y and self.state.direction != AGENT_DIRECTION_NORTH:
-         return turn_right()
-   elif target_y > self.state.pos_y and self.state.direction != AGENT_DIRECTION_SOUTH:
-         return turn_right()
-   else:
-         # if the target was from the stack, pop the stack to move to next target in the next call
-         if self.state.backtrack_stack:
-            self.state.backtrack_stack.pop()
-            print("Backtrack stack after pop: ", self.state.backtrack_stack)
-         else:
-            self.state.queue.popleft()
-            print("Queue after left pop: ", self.state.queue)
-
-         print("Moving forward towards: ", target_x, target_y)
-         return move_forward()
-```
 
 
 - The agent first checks if it should return home by evaluating the boolean ```state.go_home```, if true and the agent is at the home position, it stops execution.

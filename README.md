@@ -23,8 +23,15 @@ The aim of the course is to introduce concepts and applications of artificial in
 - Strategies for automatic learning.
 - Orientation in architectures for AI.
 
-## Lab 1 - Intelligent Agents
+## [Lab 1 - Intelligent Agents](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab1-intelligent-agents)
+The purpose with this lab is to introduce the agent paradigm. The goal is to program an agent to autonomously clean a randomly generated world of various sizes, potentially with obstacles. The agent's goal is to clean all dirty squares and return to its starting position.
+**Without obstacles (systematic exploration):**
 
+![](lab1-intelligent-agents/L1-task1.gif)
+
+**With obstacles (uses BFS):**
+
+![](lab1-intelligent-agents/L1-task2.gif)
 
 ## Lab 2 - Search
 
