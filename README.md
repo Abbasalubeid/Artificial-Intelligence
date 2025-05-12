@@ -1,6 +1,32 @@
-# TDDC17 - Artificial Intelligence
+# Artificial Intelligence
 
-This repository contains solutions to labs from the course TDDC17 - Artificial Intelligence, at Linköping University.
+This repository contains solutions to labs from an Artificial Intelligence course at Linköping University.
+
+## [Lab 1 - Intelligent Agents](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab1-intelligent-agents)
+The purpose with this lab is to introduce the agent paradigm. The goal is to program an agent to autonomously clean a randomly generated world of various sizes, potentially with obstacles (black cells). The agent's goal is to clean all dirt (grey cells) and return to its starting position.
+
+**Without obstacles (systematic exploration):**
+
+![](lab1-intelligent-agents/L1-task1.gif)
+
+**With obstacles (uses BFS):**
+
+![](lab1-intelligent-agents/L1-task2.gif)
+
+## Lab 2 - Search
+
+## [Lab 3 - Supervised Deep Learning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab3-deep-learning)
+
+This lab was mostly a tutorial on [TensorFlow](https://www.tensorflow.org) and how the theoretical part studied about suprevised deep learning like gradient descent and mini-batch sizes can be used in a project. The lab focused on building an image recognition model on the "Fashion MNIST" data set which is a set of product images from the clothing retailer Zalando.
+
+![Lab3-Result](lab3-deep-learning/lab3-predictions.png)
+
+## [Lab 4 - Bayesian Networks](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab4-bayesian-networks)
+
+This lab is about building and testing Bayesian Networks to make predictions. We used a tool to model a nuclear power plant and explored how different events affect safety.
+
+![part3-3](https://github.com/Abbasalubeid/Artificial-Intelligence/raw/main/lab4-bayesian-networks/part3-3.png)  
+
 
 ## Intended Learning Outcomes
 
@@ -22,22 +48,3 @@ The aim of the course is to introduce concepts and applications of artificial in
 - Action planning and robotics.
 - Strategies for automatic learning.
 - Orientation in architectures for AI.
-
-## [Lab 1 - Intelligent Agents](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab1-intelligent-agents)
-The purpose with this lab is to introduce the agent paradigm. The goal is to program an agent to autonomously clean a randomly generated world of various sizes, potentially with obstacles (black cells). The agent's goal is to clean all dirt (grey cells) and return to its starting position.
-
-**Without obstacles (systematic exploration):**
-
-![](lab1-intelligent-agents/L1-task1.gif)
-
-**With obstacles (uses BFS):**
-
-![](lab1-intelligent-agents/L1-task2.gif)
-
-## Lab 2 - Search
-
-## [Lab 3 - Supervised Deep Learning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab3-deep-learning)
-
-This lab was mostly a tutorial on [TensorFlow](https://www.tensorflow.org) and how the theoretical part studied about suprevised deep learning like gradient descent and mini-batch sizes can be used in a project. The lab focused on building an image recognition model on the "Fashion MNIST" data set which is a set of product images from the clothing retailer Zalando.
-
-![Lab3-Result](lab3-deep-learning/lab3-predictions.png)
