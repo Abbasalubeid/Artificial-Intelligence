@@ -1,6 +1,6 @@
 ## Q learning
 
-This lab was about teaching a rocket to auto fly smoothly without explicit programming with Q learning, a reinforcement learning method where the agent/rocket learns an optimal policy by exploring actions and receiving rewards based on how well it maintains its orientation and velocity in the simulated space. 
+This lab was about teaching a rocket to auto fly smoothly with Q learning, a reinforcement learning method where the agent/rocket learns an optimal policy by exploring actions and receiving rewards based on how well it maintains its orientation and velocity in the simulated space. 
 
 [report](https://github.com/Abbasalubeid/Artificial-Intelligence/blob/main/lab5-reinforcement-learning/rl_workspace/report.pdf)
 
