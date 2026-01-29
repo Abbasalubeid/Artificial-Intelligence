@@ -13,7 +13,7 @@ The purpose with this lab is to introduce the agent paradigm. The goal is to pro
 
 ![](lab1-intelligent-agents/L1-task2.gif)
 
-## Lab 2 - Search
+## [Lab 2 - Search](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab2-search/lab2_workspace/lab2_part1/src)
 
 ## [Lab 3 - Supervised Deep Learning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab3-deep-learning)
 
@@ -23,10 +23,23 @@ This lab was mostly a tutorial on [TensorFlow](https://www.tensorflow.org) and h
 
 ## [Lab 4 - Bayesian Networks](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab4-bayesian-networks)
 
-This lab is about building and testing Bayesian Networks to make predictions. We used a tool to model a nuclear power plant and explored how different events affect safety.
+This lab is about building and testing Bayesian Networks to make predictions.
 
 ![part3-3](https://github.com/Abbasalubeid/Artificial-Intelligence/raw/main/lab4-bayesian-networks/part3-3.png)  
 
+## [Lab 5 - Reinforcement Learning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab5-reinforcement-learning/rl_workspace)
+
+This lab was about teaching a rocket to auto fly smoothly without explicit programming with Q learning, a reinforcement learning method where the agent/rocket learns an optimal policy by exploring actions and receiving rewards based on how well it maintains its orientation and velocity in the simulated space. 
+
+[report](https://github.com/Abbasalubeid/Artificial-Intelligence/blob/main/lab5-reinforcement-learning/rl_workspace/report.pdf)
+
+## Exploration
+Exploration is when the agent tries random actions to discover which ones lead to better rewards.
+![L5-exploration](https://github.com/Abbasalubeid/Artificial-Intelligence/raw/main/lab5-reinforcement-learning/rl_workspace/L5-exploration.gif)
+
+## Explotation
+Explotation is when the agent uses what it has already learned to take the best possible actions.
+![L5-explotation](https://github.com/Abbasalubeid/Artificial-Intelligence/raw/main/lab5-reinforcement-learning/rl_workspace/L5-explotation.gif)
 
 ## Intended Learning Outcomes
 
