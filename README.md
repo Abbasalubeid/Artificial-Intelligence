@@ -42,6 +42,8 @@ Explotation is when the agent uses what it has already learned to take the best 
 ## [Lab 6 - Planning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab6-planning)
 This lab was about modeling a planning task to help a robot unlock a front door by defining actions for moving, picking up keys, and unlocking doors.
 
+![problem](https://github.com/Abbasalubeid/Artificial-Intelligence/blob/main/lab6-planning/problem.png)
+
 ## Intended Learning Outcomes
 
 The aim of the course is to introduce concepts and applications of artificial intelligence (AI). The focus is on developing intelligent agent systems that can decide what to do and execute those actions. After the course, students will be able to explain, discuss, and apply artificial intelligence concepts such as:
