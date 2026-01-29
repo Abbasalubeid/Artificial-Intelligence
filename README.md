@@ -29,7 +29,7 @@ This lab is about building and testing Bayesian Networks to make predictions.
 
 ## [Lab 5 - Reinforcement Learning](https://github.com/Abbasalubeid/Artificial-Intelligence/tree/main/lab5-reinforcement-learning/rl_workspace)
 
-This lab was about teaching a rocket to auto fly smoothly without explicit programming with Q learning, a reinforcement learning method where the agent/rocket learns an optimal policy by exploring actions and receiving rewards based on how well it maintains its orientation and velocity in the simulated space. 
+This lab was about teaching a rocket to auto fly smoothly with Q learning, a reinforcement learning method where the agent/rocket learns an optimal policy by exploring actions and receiving rewards based on how well it maintains its orientation and velocity in the simulated space. 
 
 ## Exploration
 Exploration is when the agent tries random actions to discover which ones lead to better rewards.
